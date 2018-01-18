@@ -5,6 +5,10 @@
  * Date: 16.01.2018
  * Time: 22:56
  */
+
+$token = "34b6b7c1ea1edbebf1c1796367eeb30360ac7d1a98138a2fc78e935df6822a16e6b57e37e7ea122653c8a";
+$gid = "-158697256";
+
 $today=time();
 
 $Month_r = array(
@@ -32,7 +36,7 @@ $helloText="Расписание кинотеатр им. Ковтюха на $d
 
 echo $helloText;
 
-$req="https://kudago.com/public-api/v1.3/movies/?lang=&fields=title,description,body_text,director,stars,awards,trailer,poster,imdb_rating&expand=&order_by=&text_format=&ids=&location=&premiering_in_location=&actual_since=".$today;
+$req="https://kudago.com/public-api/v1.3/movies/?lang=&fields=title,description,body_text,director,stars,awards,trailer,poster,imdb_rating,age_restriction&expand=&order_by=&text_format=&ids=&location=&premiering_in_location=&actual_since=".$today;
 
 $response = json_decode(file_get_contents($req));
 
@@ -45,10 +49,26 @@ foreach( $response as $key => $value){
 }
 */
 //echo $response->results[0]->title;
-echo "<h2> Сейчас в кино </h2>";
+echo "<h2> Сейчас в кино трейлер: </h2>";
 foreach( $response->results as $key => $value){
-    echo "$value->title<br />";
-    echo "Трейлер: $value->trailer<br />";
+    echo "$value->title <br />";
+
+
+}
+
+
+echo "<h2> Сейчас в кино трейлер: </h2>";
+foreach( $response->results as $key => $value){
+    echo "$value->title <br />";
+    echo "$value->trailer<br />";
+
+}
+
+
+echo "<h2> Сейчас в кино ограничение и трейлер: </h2>";
+foreach( $response->results as $key => $value){
+    echo "$value->title $value->age_restriction<br />";
+    echo "$value->trailer<br />";
 
 }
 
@@ -56,11 +76,30 @@ echo "<h2> Подробно про каждый фильм </h2>";
 
 
 foreach( $response->results as $key => $value){
-    echo "<h3> $value->title <br /> </h3>";
+    echo "<h3> $value->title $value->age_restriction <br /> </h3>";
     echo "Рейтинг: $value->imdb_rating<br />";
 //    echo "$value->description<br /> <br />";
     echo "$value->body_text<br />";
     echo "Трейлер: $value->trailer<br />";
 //    echo "Постер: $value->poster <br />";
 
+    $message=urlencode($value->title." \n  \n ".strip_tags($value->body_text));
+    $url="https://api.vk.com/method/wall.post?owner_id=".$gid."&from_group=1&message=".$message."&access_token=".$token."&attachments=".$value->trailer;
+
+    echo "<a href=$url> Выложить пост  </a><br />";
+
+
 }
+
+
+
+
+//https://oauth.vk.com/access_token
+
+
+/*
+$query = file_get_contents
+("https://api.vk.com/method/wall.post?owner_id=".$gid."&from_group=1&message=".$message."&access_token=".$token);
+$response = json_decode($query);
+echo $response;
+*/
