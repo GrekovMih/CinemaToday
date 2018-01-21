@@ -6,9 +6,8 @@
  * Time: 22:56
  */
 
-$token = "34b6b7c1ea1edbebf1c1796367eeb30360ac7d1a98138a2fc78e935df6822a16e6b57e37e7ea122653c8a";
-$gid = "-158697256";
 
+$gid = "-158697256";
 $today=time();
 
 $Month_r = array(
@@ -25,10 +24,25 @@ $Month_r = array(
     "11" => "ноября",
     "12" => "декабря");
 
-$month=$Month_r[date("m")];
+
+/*
 $todayName = date("N");
 $dayFirst = date("d") +  4 - $todayName ;
 $daySeven = $dayFirst + 7;
+
+*/
+
+$date = new DateTime();
+$todayName = date("N");
+$next = ($todayName<4) ? 0 : 7;
+$dney = $next + 4 - $todayName;
+$date->modify("+$dney day");
+$dayFirst = $date->format('d');
+$date->modify('+7 day');
+$daySeven = $date->format('d');
+//echo $date->format('Y-m-d H:i:s');
+$month=$Month_r[$date->format("m")];
+
 
 $helloText="Расписание кинотеатр им. Ковтюха на $dayFirst - $daySeven $month <br> 
 Стоимость билетов: 2D - 200 руб., 3D - 250 руб. <br> 
