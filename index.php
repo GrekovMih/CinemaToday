@@ -1,3 +1,11 @@
+<style>
+    body{
+        margin:2% 25%;
+    }
+
+</style>
+
+
 <?php
 /**
  * Created by PhpStorm.
@@ -8,7 +16,8 @@
 
 
 $gid = "-158697256";
-$today=time();
+$token = "aad4d3e0c1a5380213868010c57dd56f1596e336d7aa1cbe7d7455645f2cf16274d7fc88ece6391b1572b";
+//$today=time();
 
 $Month_r = array(
     "01" => "января",
@@ -38,7 +47,8 @@ $next = ($todayName<4) ? 0 : 7;
 $dney = $next + 4 - $todayName;
 $date->modify("+$dney day");
 $dayFirst = $date->format('d');
-$date->modify('+7 day');
+$date->modify('+6 day');
+$today = strtotime("+6 day");
 $daySeven = $date->format('d');
 //echo $date->format('Y-m-d H:i:s');
 $month=$Month_r[$date->format("m")];
